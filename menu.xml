@@ -104,6 +104,9 @@
       <menuitem label="Motorista">
         <action>MotoristaList</action>
       </menuitem>
+      <menuitem label="Feriado">
+        <action>FeriadoList</action>
+      </menuitem>
     </menu>
   </menuitem>
   <menuitem label="Logout">

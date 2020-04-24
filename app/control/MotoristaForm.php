@@ -21,6 +21,7 @@ class MotoristaForm extends TPage
         parent::__construct();
         $this->setDatabase('banco');
         $this->setActiveRecord('Motorista');
+        $this->setAfterSaveAction(new TAction(['MotoristaList', 'onReload']));
 
         $this->form = new BootstrapFormBuilder('form_motorista');
         $this->form->setFormTitle('Motorista');
