@@ -1,0 +1,6 @@
+/lib
+/vendor
+app/output
+/files
+/rest
+/tmp
