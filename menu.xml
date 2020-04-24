@@ -109,6 +109,13 @@
       </menuitem>
     </menu>
   </menuitem>
+  <menuitem label="Agendamento">
+    <menu>
+      <menuitem label="Veículo">
+        <action>AgendamentoList</action>
+      </menuitem>
+    </menu>
+  </menuitem>
   <menuitem label="Logout">
     <action>LoginForm#method=onLogout#static=1</action>
     <icon>fas:sign-out-alt fa-fw</icon>

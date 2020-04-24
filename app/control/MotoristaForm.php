@@ -3,7 +3,6 @@
 use Adianti\Base\AdiantiStandardFormTrait;
 use Adianti\Control\TAction;
 use Adianti\Control\TPage;
-use Adianti\Core\AdiantiCoreApplication;
 use Adianti\Validator\TRequiredValidator;
 use Adianti\Widget\Form\TDate;
 use Adianti\Widget\Form\TEntry;
