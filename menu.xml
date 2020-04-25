@@ -107,6 +107,16 @@
       <menuitem label="Feriado">
         <action>FeriadoList</action>
       </menuitem>
+      <menuitem label="Veículo">
+        <action>VeiculoList</action>
+      </menuitem>
+    </menu>
+  </menuitem>
+  <menuitem label="Administrar">
+    <menu>
+      <menuitem label="Agendamento">
+        <action>AgendamentoAdminList</action>
+      </menuitem>
     </menu>
   </menuitem>
   <menuitem label="Agendamento">

@@ -3,8 +3,6 @@
 use Adianti\Base\AdiantiStandardListTrait;
 use Adianti\Control\TAction;
 use Adianti\Control\TPage;
-use Adianti\Database\TCriteria;
-use Adianti\Database\TFilter;
 use Adianti\Registry\TSession;
 use Adianti\Widget\Container\TPanelGroup;
 use Adianti\Widget\Container\TVBox;
@@ -18,7 +16,7 @@ use Adianti\Widget\Form\TLabel;
 use Adianti\Wrapper\BootstrapDatagridWrapper;
 use Adianti\Wrapper\BootstrapFormBuilder;
 
-class AgendamentoList extends TPage
+class AgendamentoAdminList extends TPage
 {
     protected $form, $datagrid, $pageNavigation;
 
@@ -27,24 +25,23 @@ class AgendamentoList extends TPage
     public function __construct()
     {
         parent::__construct();
-        $criteria = new TCriteria;
-        $criteria->add(new TFilter('system_user_id', '=', TSession::getValue('userid')));
-        $this->setCriteria($criteria);
         $this->setDatabase('banco');
         $this->setActiveRecord('Agendamento');
         $this->setLimit(5);
         $this->setDefaultOrder('id', 'desc');
         $this->addFilterField('id', 'like', 'id');
 
-        $this->form = new BootstrapFormBuilder('form_agendamento_search');
-        $this->form->setFormTitle('Agendamento');
+        $this->form = new BootstrapFormBuilder('form_agendamento_admin_search');
+        $this->form->setFormTitle('Agendamento - Administrar');
 
         $id = new TEntry('id');
 
         $this->form->addFields([new TLabel('ID')], [$id]);
 
+        $this->form->setData(TSession::getValue(__CLASS__ . '_filter_data'));
+
         $this->form->addAction('Procurar', new TAction([$this, 'onSearch']), 'fa:search green');
-        $this->form->addActionLink('Cadastrar', new TAction(['AgendamentoForm', 'onEdit']), 'fa:plus blue');
+        $this->form->addActionLink('Cadastrar', new TAction(['AgendamentoAdminForm', 'onEdit']), 'fa:plus blue');
 
         $this->datagrid = new BootstrapDatagridWrapper(new TDataGrid);
         $this->datagrid->style = 'width:100%;overflow-x:auto';
@@ -56,6 +53,7 @@ class AgendamentoList extends TPage
         $col_motorista_id = new TDataGridColumn('{motorista->nome}', 'Motorista', 'left');
         $col_veiculo_id = new TDataGridColumn('{veiculo->modelo}({veiculo->placa})', 'Veículo', 'left');
         $col_status = new TDataGridColumn('status', 'Status', 'left');
+        $col_system_user_id = new TDataGridColumn('{system_user->name}', 'Usuário', 'left');
 
         $col_status->setTransformer(function ($valor) {
             $status = [0 => 'AGUARDANDO', 1 => 'LIBERADO', 2 => 'NEGADO', 3 => 'TRAVADO'];
@@ -68,6 +66,7 @@ class AgendamentoList extends TPage
         });
 
         $this->datagrid->addColumn($col_id);
+        $this->datagrid->addColumn($col_system_user_id);
         $this->datagrid->addColumn($col_data_viagem);
         $this->datagrid->addColumn($col_destino);
         $this->datagrid->addColumn($col_motivo);
@@ -75,18 +74,15 @@ class AgendamentoList extends TPage
         $this->datagrid->addColumn($col_veiculo_id);
         $this->datagrid->addColumn($col_status);
 
-        $acao_editar = new TDataGridAction(['AgendamentoForm', 'onEdit'], ['id' => '{id}']);
-        $acao_excluir = new TDataGridAction([$this, 'onDelete'], ['id' => '{id}']);
+        $acao_editar = new TDataGridAction(['AgendamentoAdminForm', 'onEdit'], ['id' => '{id}']);
 
         $acao_condicao = function ($objeto) {
             return $objeto->status > 0 ? false : true;
         };
 
         $acao_editar->setDisplayCondition($acao_condicao);
-        $acao_excluir->setDisplayCondition($acao_condicao);
 
         $this->datagrid->addAction($acao_editar, 'Editar', 'fa:edit blue');
-        $this->datagrid->addAction($acao_excluir, 'Excluir', 'fa:trash red');
 
         $this->datagrid->createModel();
 

@@ -36,4 +36,9 @@ class Agendamento extends TRecord
     {
         return Veiculo::find($this->veiculo_id);
     }
+
+    public function get_system_user()
+    {
+        return SystemUser::find($this->system_user_id);
+    }
 }
