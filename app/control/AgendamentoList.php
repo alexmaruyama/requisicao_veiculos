@@ -58,8 +58,8 @@ class AgendamentoList extends TPage
         $col_status = new TDataGridColumn('status', 'Status', 'left');
 
         $col_status->setTransformer(function ($valor) {
-            $status = [0 => 'AGUARDANDO', 1 => 'LIBERADO', 2 => 'NEGADO', 3 => 'TRAVADO'];
-            $cores = [0 => 'yellow', 'green', 'red', 'purple'];
+            $status = [0 => 'AGUARDANDO', 1 => 'LIBERADO', 2 => 'NEGADO', 3 => 'FINALIZADO', 4 => 'TRAVADO'];
+            $cores = [0 => 'yellow', 'green', 'red', 'white', 'orange'];
             return '<span style="background-color:' . $cores[$valor] . ';font-weight:bold">' . $status[$valor] . '</span>';
         });
 
@@ -77,6 +77,10 @@ class AgendamentoList extends TPage
 
         $acao_editar = new TDataGridAction(['AgendamentoForm', 'onEdit'], ['id' => '{id}']);
         $acao_excluir = new TDataGridAction([$this, 'onDelete'], ['id' => '{id}']);
+        $acao_encerrar = new TDataGridAction(['AgendamentoEncerrarForm', 'onEdit'], ['id' => '{id}']);
+        $acao_visualizar = new TDataGridAction(['AgendamentoFormView', 'onLoad'], ['id' => '{id}']);
+
+        $acao_encerrar->setButtonClass('btn btn-primary btn-sm');
 
         $acao_condicao = function ($objeto) {
             return $objeto->status > 0 ? false : true;
@@ -85,8 +89,18 @@ class AgendamentoList extends TPage
         $acao_editar->setDisplayCondition($acao_condicao);
         $acao_excluir->setDisplayCondition($acao_condicao);
 
+        $acao_encerrar->setDisplayCondition(function ($objeto) {
+            return $objeto->status == 1 ? true : false;
+        });
+
+        $acao_visualizar->setDisplayCondition(function ($objeto) {
+            return $objeto->status > 1 ? true : false;
+        });
+
         $this->datagrid->addAction($acao_editar, 'Editar', 'fa:edit blue');
         $this->datagrid->addAction($acao_excluir, 'Excluir', 'fa:trash red');
+        $this->datagrid->addAction($acao_encerrar, 'Encerrar', '');
+        $this->datagrid->addAction($acao_visualizar, 'Visualizar', 'fa:search green');
 
         $this->datagrid->createModel();
 

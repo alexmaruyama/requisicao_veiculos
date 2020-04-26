@@ -56,8 +56,8 @@ class AgendamentoAdminList extends TPage
         $col_system_user_id = new TDataGridColumn('{system_user->name}', 'Usuário', 'left');
 
         $col_status->setTransformer(function ($valor) {
-            $status = [0 => 'AGUARDANDO', 1 => 'LIBERADO', 2 => 'NEGADO', 3 => 'TRAVADO'];
-            $cores = [0 => 'yellow', 'green', 'red', 'purple'];
+            $status = [0 => 'AGUARDANDO', 1 => 'LIBERADO', 2 => 'NEGADO', 3 => 'FINALIZADO', 4 => 'TRAVADO'];
+            $cores = [0 => 'yellow', 'green', 'red', 'white', 'orange'];
             return '<span style="background-color:' . $cores[$valor] . ';font-weight:bold">' . $status[$valor] . '</span>';
         });
 
@@ -75,14 +75,22 @@ class AgendamentoAdminList extends TPage
         $this->datagrid->addColumn($col_status);
 
         $acao_editar = new TDataGridAction(['AgendamentoAdminForm', 'onEdit'], ['id' => '{id}']);
+        $acao_visualizar = new TDataGridAction(['AgendamentoFormView', 'onLoad'], ['id' => '{id}']);
 
-        $acao_condicao = function ($objeto) {
+        $acao_editar->setDisplayCondition(function ($objeto) {
             return $objeto->status > 0 ? false : true;
-        };
+        });
 
-        $acao_editar->setDisplayCondition($acao_condicao);
+        $acao_visualizar->setDisplayCondition(function ($objeto) {
+            return $objeto->status;
+        });
+
+        $acao_visualizar->setDisplayCondition(function ($objeto) {
+            return $objeto->status > 1 ? true : false;
+        });
 
         $this->datagrid->addAction($acao_editar, 'Editar', 'fa:edit blue');
+        $this->datagrid->addAction($acao_visualizar, 'Visualizar', 'fa:search green');
 
         $this->datagrid->createModel();
 
