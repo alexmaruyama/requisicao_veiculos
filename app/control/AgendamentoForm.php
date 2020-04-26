@@ -35,6 +35,7 @@ class AgendamentoForm extends TPage
         $system_user_id = new THidden('system_user_id');
         $veiculo_id = new TDBUniqueSearch('veiculo_id', 'banco', 'Veiculo', 'id', 'placa', 'placa');
         $motorista_id = new TDBUniqueSearch('motorista_id', 'banco', 'Motorista', 'id', 'nome', 'nome');
+        $ramal = new TEntry('ramal');
 
         $id->setEditable(false);
         $data_agendamento->setEditable(false);
@@ -45,6 +46,7 @@ class AgendamentoForm extends TPage
         $veiculo_id->setMinLength(0);
         $motorista_id->setMinLength(0);
         $veiculo_id->setMask('{modelo}-{placa}');
+        $ramal->setMask('999');
 
         $data_agendamento->setValue(date('d/m/Y H:i'));
         // $data_viagem->setValue(date('d/m/Y H:i'));
@@ -54,10 +56,11 @@ class AgendamentoForm extends TPage
         $veiculo_id->addValidation('Veículo', new TRequiredValidator);
         $motorista_id->addValidation('Motorista', new TRequiredValidator);
         $motivo->addValidation('Motivo', new TRequiredValidator);
+        $ramal->addValidation('Ramal', new TRequiredValidator);
 
         $this->form->addFields([$system_user_id, $status]);
         $this->form->addFields([new TLabel('ID')], [$id], [new TLabel('Data agendamento')], [$data_agendamento]);
-        $this->form->addFields([new TLabel('Data viagem', 'red')], [$data_viagem]);
+        $this->form->addFields([new TLabel('Data viagem', 'red')], [$data_viagem], [new TLabel('Ramal', 'red')], [$ramal]);
         $this->form->addFields([new TLabel('Destino', 'red')], [$destino]);
         $this->form->addFields([new TLabel('Motivo', 'red')], [$motivo]);
         $this->form->addFields([new TLabel('Motorista', 'red')], [$motorista_id]);

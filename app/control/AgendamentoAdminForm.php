@@ -38,6 +38,7 @@ class AgendamentoAdminForm extends TPage
         $veiculo_nome = new TEntry('veiculo_nome');
         $motorista_nome = new TEntry('motorista_nome');
         $motivo_transporte = new TEntry('motivo_transporte');
+        $ramal = new TEntry('ramal');
 
         $status->addItems([1 => 'LIBERADO', 2 => 'NEGADO']);
         $id->setEditable(false);
@@ -48,6 +49,7 @@ class AgendamentoAdminForm extends TPage
         $motorista_nome->setEditable(false);
         $veiculo_nome->setEditable(false);
         $system_user_name->setEditable(false);
+        $ramal->setEditable(false);
         $status->setLayout('horizontal');
         $status->setUseButton();
 
@@ -66,6 +68,7 @@ class AgendamentoAdminForm extends TPage
         $this->form->addFields([new TLabel('Motorista')], [$motorista_nome]);
         $this->form->addFields([new TLabel('Veículo')], [$veiculo_nome]);
         $this->form->addFields([new TLabel('Usuário')], [$system_user_name]);
+        $this->form->addFields([new TLabel('Ramal')], [$ramal]);
         $this->form->addFields([new TLabel('Status', 'red')], [$status]);
         $this->form->addFields([new TLabel('Motivo [no caso de negado]')], [$motivo_transporte]);
 

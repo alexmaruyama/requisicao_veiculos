@@ -35,6 +35,7 @@ class AgendamentoFormView extends TWindow
         $hora_saida = new TTime('hora_saida');
         $hora_chegada = new TTime('hora_chegada');
         $motivo_transporte = new TEntry('motivo_transporte');
+        $ramal = new TEntry('ramal');
 
         $id->setEditable(false);
         $data_viagem->setEditable(false);
@@ -48,9 +49,11 @@ class AgendamentoFormView extends TWindow
         $km_chegada->setEditable(false);
         $hora_chegada->setEditable(false);
         $hora_saida->setEditable(false);
+        $ramal->setEditable(false);
+        $motivo_transporte->setEditable(false);
 
         $this->form->addFields([new TLabel('ID')], [$id], [new TLabel('Data agendamento')], [$data_agendamento]);
-        $this->form->addFields([new TLabel('Data viagem')], [$data_viagem]);
+        $this->form->addFields([new TLabel('Data viagem')], [$data_viagem], [new TLabel('Ramal')], [$ramal]);
         $this->form->addFields([new TLabel('Destino')], [$destino]);
         $this->form->addFields([new TLabel('Motivo')], [$motivo]);
         $this->form->addFields([new TLabel('Motorista')], [$motorista_nome]);

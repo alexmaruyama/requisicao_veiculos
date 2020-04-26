@@ -25,6 +25,7 @@ class Agendamento extends TRecord
         parent::addAttribute('motivo_transporte');
         parent::addAttribute('veiculo_id');
         parent::addAttribute('motorista_id');
+        parent::addAttribute('ramal');
     }
 
     public function get_motorista()
